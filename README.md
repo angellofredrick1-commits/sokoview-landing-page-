@@ -54,7 +54,7 @@ gh repo create sokoview-landing --private --source=. --push
 
 | Key | Value |
 |---|---|
-| `SUPABASE_URL` | `https://iwzgkhncmsodfccwatht.supabase.co` |
+| `SUPABASE_URL` | `https://YOUR-PROJECT-REF.supabase.co` |
 | `SUPABASE_ANON_KEY` | Supabase → Project Settings → **API keys** → the *anon* / *publishable* key |
 
 Use the **anon / publishable** key only. Never the `service_role` key.
