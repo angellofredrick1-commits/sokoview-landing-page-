@@ -3,7 +3,7 @@
 // JSON payload for the landing page. The Supabase key never reaches the browser.
 //
 // Environment variables (Netlify → Site configuration → Environment variables):
-//   SUPABASE_URL       e.g. https://<your-project-ref>.supabase.co
+//   SUPABASE_URL       e.g. https://iwzgkhncmsodfccwatht.supabase.co
 //   SUPABASE_ANON_KEY  the project's public anon / publishable key (NOT the service key)
 
 const TOP_N = 10;

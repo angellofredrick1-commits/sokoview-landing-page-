@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sokoview · What if you'd invested last year?</title>
+<title>Sokoview · The DSE market, clearly</title>
 <meta name="description" content="Sokoview is a free portfolio tracker for the Dar es Salaam Stock Exchange. See what a DSE investment from January 2025 would be worth today, using real closing prices.">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0d0c" media="(prefers-color-scheme: dark)">
@@ -49,24 +49,19 @@
   </div>
 </nav>
 
-<!-- ============ MARKET STRIP ============ -->
-<section class="strip" aria-label="DSE closing prices">
-  <div class="strip-label"><span class="dot" aria-hidden="true"></span><span id="strip-label">DSE · Latest close</span></div>
-  <div class="strip-scroll" id="strip-scroll" tabindex="0" aria-label="Closing prices for all DSE stocks. Hover or focus to pause.">
-    <div class="marquee">
-      <div class="marquee-set" id="strip-set"></div>
-      <div class="marquee-set marquee-copy" id="strip-copy" aria-hidden="true"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HERO: WHAT IF ============ -->
+<!-- ============ HERO: PRODUCT + CALCULATOR ============ -->
 <header id="top" class="hero">
   <div class="wrap">
-    <p class="eyebrow center">Portfolio tracker for the Dar es Salaam Stock Exchange</p>
-    <h1 class="hero-title">What if you'd invested <span class="green">last year?</span></h1>
-    <p class="hero-sub">Pick a DSE stock and an amount. See what January 2025 would be worth today, using real closing prices.</p>
+    <h1 class="hero-title">The DSE market, <span class="green">clearly.</span></h1>
+    <p class="hero-sub">Track your stocks, bonds and dividends in one calm dashboard. Built for long-term DSE investors.</p>
+    <div class="hero-cta">
+      <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
+    </div>
 
+    <div class="calc-head">
+      <h2 class="calc-title">What if you'd invested last year?</h2>
+      <p class="calc-sub">Pick a stock and an amount. Real closing prices, January 2025 to today.</p>
+    </div>
     <div class="calc" id="calc">
       <div class="calc-in">
         <div class="calc-label">If you'd invested</div>
@@ -92,6 +87,17 @@
     <p class="hero-note center">Sokoview is free, with no time limit · No card needed · Never touches your broker account</p>
   </div>
 </header>
+
+<!-- ============ MARKET STRIP (page break) ============ -->
+<section class="strip" aria-label="DSE closing prices">
+  <div class="strip-label"><span class="dot" aria-hidden="true"></span><span id="strip-label">DSE · Latest close</span></div>
+  <div class="strip-scroll" id="strip-scroll" tabindex="0" aria-label="Closing prices for all DSE stocks. Hover or focus to pause.">
+    <div class="marquee">
+      <div class="marquee-set" id="strip-set"></div>
+      <div class="marquee-set marquee-copy" id="strip-copy" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ MOVERS ============ -->
 <section id="markets" class="section" aria-labelledby="movers-title">
