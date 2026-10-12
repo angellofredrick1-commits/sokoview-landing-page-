@@ -5,7 +5,7 @@
   'use strict';
 
   // Logos bundled in /logos. Stocks without one show a ticker badge.
-  var LOGOS = { DCB: 1, MKCB: 1, NMB: 1, KCB: 1, TTP: 1, MBP: 1 };
+  var LOGOS = { DCB: 1, MKCB: 1, NMB: 1, KCB: 1, TTP: 1, MBP: 1, CRDB: 1, NICO: 1, AFRIPRISE: 1, JHL: 1 };
   var AMOUNTS = [100000, 500000, 1000000, 5000000];
   var AMOUNT_LABELS = ['100K', '500K', '1M', '5M'];
   var MAX_AMOUNT = 50000000;

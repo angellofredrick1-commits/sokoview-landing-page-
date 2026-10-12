@@ -2,6 +2,12 @@
   publish = "."
   functions = "netlify/functions"
 
+# The Supabase project URL is not a secret (it is public by design), so the
+# secrets scanner should not fail the build when it appears in docs or comments.
+# SUPABASE_ANON_KEY is still scanned.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL"
+
 [[headers]]
   for = "/*"
   [headers.values]

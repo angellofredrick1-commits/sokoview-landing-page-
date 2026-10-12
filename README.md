@@ -127,4 +127,5 @@ select json_build_object(
   split on 26 Aug 2026.
 - Sign-in links go to `https://sokoview.co.tz/auth/login` and sign-up to
   `/auth/register`. Check these match your app.
-- Logos still needed: NICO, CRDB, AFRIPRISE, JHL (they show a ticker badge until added).
+- Logos are included for all 10 current stocks. If a new stock enters the
+  grid, it shows a ticker badge until you add its logo.
