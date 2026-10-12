@@ -8,6 +8,7 @@
   var LOGOS = { DCB: 1, MKCB: 1, NMB: 1, KCB: 1, TTP: 1, MBP: 1 };
   var AMOUNTS = [100000, 500000, 1000000, 5000000];
   var AMOUNT_LABELS = ['100K', '500K', '1M', '5M'];
+  var MAX_AMOUNT = 50000000;
   var DEFAULT_STOCK = 'CRDB';
 
   var $ = function (id) { return document.getElementById(id); };
@@ -90,28 +91,30 @@
   }
 
   /* ---------- What-if calculator ---------- */
-  var calc = { stocks: [], sym: DEFAULT_STOCK, amt: 2 };
+  var calc = { stocks: [], sym: DEFAULT_STOCK, amount: 1000000 };
+  var amountInput = $('calc-amount');
 
   function renderCalc() {
     var g = calc.stocks.filter(function (s) { return s.symbol === calc.sym; })[0] || calc.stocks[0];
     if (!g) return;
     calc.sym = g.symbol;
-    var amount = AMOUNTS[calc.amt];
+    var amount = calc.amount;
     var worth = amount * g.latest_close / g.start_close;
     var gain = worth - amount;
     var pct = (g.latest_close / g.start_close - 1) * 100;
     var sign = gain >= 0 ? '+' : '−';
     var short = { day: 'numeric', month: 'short', year: 'numeric' };
 
-    $('calc-amount').textContent = num(amount);
     $('calc-name').textContent = g.name;
     $('calc-value').textContent = tzs(worth);
-    $('calc-gain').textContent = sign + 'TZS ' + num(Math.abs(gain)) + ' (' + sign + Math.abs(pct).toFixed(1) + '%)';
+    $('calc-gain').textContent = amount > 0
+      ? sign + 'TZS ' + num(Math.abs(gain)) + ' (' + sign + Math.abs(pct).toFixed(1) + '%)'
+      : sign + Math.abs(pct).toFixed(1) + '%';
     $('calc-detail').textContent = 'Bought at TZS ' + num(g.start_close) + (g.split ? ' (split-adjusted)' : '') +
       ' on ' + date(g.start_date, short) + '. TZS ' + num(g.latest_close) + ' at the ' + date(g.latest_date, short) + ' close.';
     $('calc-cta').textContent = 'Track ' + g.symbol + ' free';
 
-    Array.prototype.forEach.call($('calc-amounts').children, function (b, i) { b.setAttribute('aria-pressed', String(i === calc.amt)); });
+    Array.prototype.forEach.call($('calc-amounts').children, function (b, i) { b.setAttribute('aria-pressed', String(AMOUNTS[i] === calc.amount)); });
     Array.prototype.forEach.call($('stock-grid').children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.sym === calc.sym)); });
   }
 
@@ -129,7 +132,7 @@
       var b = el('button', 'chip press', AMOUNT_LABELS[idx]);
       b.type = 'button';
       b.setAttribute('aria-label', 'TZS ' + num(a));
-      b.addEventListener('click', function () { calc.amt = idx; renderCalc(); });
+      b.addEventListener('click', function () { setAmount(a); amountInput.value = num(a); renderCalc(); });
       chips.appendChild(b);
     });
 
@@ -155,6 +158,36 @@
     });
     renderCalc();
   }
+
+  /* Open-ended amount: digits only, formatted with commas, capped at 50M. */
+  var hint = $('calc-hint');
+  var HINT_DEFAULT = hint.textContent;
+  function setAmount(n) {
+    var capped = Math.min(Math.max(0, Math.floor(n) || 0), MAX_AMOUNT);
+    var over = n > MAX_AMOUNT;
+    hint.textContent = over ? 'The maximum is TZS 50M' : HINT_DEFAULT;
+    hint.classList.toggle('limit', over);
+    calc.amount = capped;
+    return capped;
+  }
+  amountInput.addEventListener('input', function () {
+    var raw = amountInput.value;
+    var caret = amountInput.selectionStart || raw.length;
+    var digitsBeforeCaret = raw.slice(0, caret).replace(/\D/g, '').length;
+    var digits = raw.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+    var n = setAmount(Number(digits || 0));
+    var formatted = digits ? num(n) : '';
+    amountInput.value = formatted;
+    // Keep the caret after the same number of digits once commas are re-inserted.
+    var pos = 0, seen = 0;
+    while (pos < formatted.length && seen < digitsBeforeCaret) { if (/\d/.test(formatted[pos])) seen++; pos++; }
+    try { amountInput.setSelectionRange(pos, pos); } catch (e) {}
+    renderCalc();
+  });
+  amountInput.addEventListener('blur', function () {
+    if (!amountInput.value) { setAmount(0); amountInput.value = '0'; renderCalc(); }
+  });
+  amountInput.addEventListener('focus', function () { if (amountInput.value === '0') amountInput.value = ''; });
 
   /* ---------- Bond calculator ---------- */
   var bond = $('bond');

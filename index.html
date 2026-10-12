@@ -20,6 +20,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap">
+<link rel="preload" as="image" href="/hero-skyline.jpg" media="(min-width: 761px)">
+<link rel="preload" as="image" href="/hero-skyline-mobile.jpg" media="(max-width: 760px)">
 <link rel="stylesheet" href="/styles.css">
 <script src="/app.js" defer></script>
 </head>
@@ -51,12 +53,17 @@
 
 <!-- ============ HERO: PRODUCT + CALCULATOR ============ -->
 <header id="top" class="hero">
-  <div class="wrap">
-    <h1 class="hero-title">The DSE market, <span class="green">clearly.</span></h1>
-    <p class="hero-sub">Track your stocks, bonds and dividends in one calm dashboard. Built for long-term DSE investors.</p>
-    <div class="hero-cta">
-      <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
+  <div class="hero-band">
+    <div class="hero-photo" role="img" aria-label="The Dar es Salaam waterfront skyline, in black and white"></div>
+    <div class="hero-band-inner">
+      <h1 class="hero-title">The DSE market, <span class="hero-accent">clearly.</span></h1>
+      <p class="hero-sub">Track your stocks, bonds and dividends in one calm dashboard. Built for long-term DSE investors.</p>
+      <div class="hero-cta">
+        <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
+      </div>
     </div>
+  </div>
+  <div class="wrap">
 
     <div class="calc-head">
       <h2 class="calc-title">What if you'd invested last year?</h2>
@@ -65,7 +72,8 @@
     <div class="calc" id="calc">
       <div class="calc-in">
         <div class="calc-label">If you'd invested</div>
-        <div class="calc-amount"><span class="cur">TZS</span><span class="num" id="calc-amount">1,000,000</span></div>
+        <label class="calc-amount" for="calc-amount"><span class="cur">TZS</span><input class="num amount-input" id="calc-amount" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="1,000,000" aria-describedby="calc-hint"></label>
+        <div class="calc-hint" id="calc-hint">Type any amount, up to TZS 50M</div>
         <div class="calc-sentence">in <strong id="calc-name">CRDB Bank</strong>, <strong>last year (Jan 2025)</strong></div>
         <div class="chips" role="group" aria-label="Amount" id="calc-amounts"></div>
       </div>
@@ -247,6 +255,7 @@
         <a href="https://sokoview.co.tz/terms-of-service">Terms</a>
       </div>
     </div>
+    <p class="fine">Skyline photo by <a href="https://unsplash.com/photos/body-of-water-near-buildings-at-daytime-_WT7Mg1dG3w">Omar on Unsplash</a>.</p>
     <p class="fine">Sokoview is a portfolio tracking and information tool, not financial, investment or legal advice. Past performance doesn't guarantee future results; consult a licensed adviser before investing. Sokoview Analytics Ltd is not regulated by the CMSA and does not offer brokerage services.</p>
   </div>
 </footer>
