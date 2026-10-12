@@ -54,7 +54,7 @@ gh repo create sokoview-landing --private --source=. --push
 
 | Key | Value |
 |---|---|
-| `SUPABASE_URL` | `https://YOUR-PROJECT-REF.supabase.co` |
+| `SUPABASE_URL` | `https://iwzgkhncmsodfccwatht.supabase.co` |
 | `SUPABASE_ANON_KEY` | Supabase → Project Settings → **API keys** → the *anon* / *publishable* key |
 
 Use the **anon / publishable** key only. Never the `service_role` key.
@@ -107,4 +107,5 @@ select json_build_object(
   split on 26 Aug 2026.
 - Sign-in links go to `https://sokoview.co.tz/auth/login` and sign-up to
   `/auth/register`. Check these match your app.
-- Logos still needed: NICO, CRDB, AFRIPRISE, JHL (they show a ticker badge until added).
+- Logos are included for all 10 current stocks. If a new stock enters the
+  grid, it shows a ticker badge until you add its logo.
