@@ -2,10 +2,9 @@
 
 A static landing page plus one Netlify function. The page shows:
 
-- **The totem hero** – a 3D street signal with its signs, in a tall amber panel beside the headline. Its lamps show how many DSE stocks fell (red), held (amber) and rose (green) at the last close, and its LED sign scrolls the day's biggest movers.
-- **Live market strip** – every DSE stock's latest close and % change, auto-scrolling.
+- **The photo hero** – the Dar es Salaam harbour at sunset, edge to edge and up behind the nav, with the headline, a sub-line and the sign-up button on it.
+- **"[Weekday] on the DSE"** – directly under the hero. A 3D street signal with its signs stands in a tall amber panel; its lamps show how many DSE stocks fell (red), held (amber) and rose (green) at the last close, and its LED sign scrolls the day's biggest movers. Beside it: a red/amber/green breadth bar with the top gainers and losers.
 - **"What if you'd invested last year?"** – the calculator, using the 10 DSE stocks that have risen most since January 2025, shown in random order.
-- **"[Weekday] on the DSE"** – a red/amber/green breadth bar with the top gainers and losers at the last close.
 - Tools (bond calculator, share toggle), how it works, privacy, community, pricing and FAQ.
 
 All market data comes live from Supabase, read on the server, so no key ever reaches the browser.
@@ -14,7 +13,7 @@ All market data comes live from Supabase, read on the server, so no key ever rea
 index.html        page markup
 styles.css        all styles (light + dark themes)
 app.js            renders the data, calculator, theme toggle, FAQ, scroll effects
-signal.js         the 3D hero signal (Three.js, loaded from the jsDelivr CDN)
+signal.js         the 3D totem signal (Three.js, loaded from the jsDelivr CDN)
 images/           section photos (Unsplash, credited in the footer)
 logos/            company logos (SYMBOL.png)
 data/fallback.json  snapshot used only if the live function fails
@@ -104,17 +103,15 @@ select json_build_object(
   'generated_at', now());
 ```
 
-## The hero totem
+## The totem
 
 - `app.js` works out how many stocks rose, held and fell and the day's biggest movers,
-  prints the counts as the line under the hero button, and hands everything to `signal.js`
-  through the `sv:signal` event.
+  and hands everything to `signal.js` through the `sv:signal` event.
 - `signal.js` draws the totem. The lamps flash together, play in turn, then rest on the
   day's lamp; the sign scrolls the movers; the white plaque shows the close date.
-- `app.js` also sets `<html data-mood="up|flat|down">` for the day. It colours the matching
-  figure in the hero's data line.
-- If WebGL or the CDN is unavailable the hero gets the class `no-3d`: the amber panel stays,
-  empty, and the numbers still show as text.
+- `app.js` also sets `<html data-mood="up|flat|down">` for the day.
+- If WebGL or the CDN is unavailable the section gets the class `no-3d`: the amber panel stays,
+  empty, and the numbers still show as text beside it.
 - With "reduce motion" on, the totem rests on the day's lamp and the ticker does not scroll.
 - Three.js is pinned to `0.160.0` in the import map in `index.html`.
 

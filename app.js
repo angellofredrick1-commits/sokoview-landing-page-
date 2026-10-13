@@ -42,25 +42,10 @@
   });
   syncThemeButton();
 
-  /* ---------- Market strip + movers ---------- */
+  /* ---------- Last close: movers, breadth and the totem ---------- */
   function renderMarket(market) {
     if (!market.length) return;
     var closeDate = market[0].trade_date;
-    $('strip-label').textContent = 'DSE · ' + date(closeDate, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '') + ' close';
-
-    var setA = $('strip-set'), setB = $('strip-copy');
-    setA.textContent = ''; setB.textContent = '';
-    market.forEach(function (m) {
-      [setA, setB].forEach(function (set) {
-        var t = el('div', 'tick');
-        t.appendChild(el('b', null, m.symbol));
-        t.appendChild(el('span', 'p', tzs(m.close)));
-        var cls = !m.traded || m.pct_change === 0 ? 'flat' : m.pct_change > 0 ? 'up' : 'down';
-        t.appendChild(el('span', 'c ' + cls, m.traded ? pctText(m.pct_change) : 'No trades'));
-        set.appendChild(t);
-      });
-    });
-
     var traded = market.filter(function (m) { return m.traded; });
     var byPct = traded.slice().sort(function (a, b) { return b.pct_change - a.pct_change; });
     var gainers = byPct.filter(function (m) { return m.pct_change > 0; }).slice(0, 3);
@@ -99,17 +84,9 @@
     }, closeDate);
   }
 
-  /* ---------- Hero totem: hand the day's counts and movers to signal.js and print the counts as text ---------- */
+  /* ---------- Totem: hand the day's counts and movers to signal.js ---------- */
   function startSignal(counts, closeDate) {
     var stamp = date(closeDate, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '');
-    var line = $('hero-data');
-    line.textContent = stamp + ' close: ';
-    [['up', ' rose'], ['flat', ' held'], ['down', ' fell']].forEach(function (part, i) {
-      if (i) line.appendChild(document.createTextNode(' · '));
-      var span = el('span', null, counts[part[0]] + part[1]);
-      span.setAttribute('data-k', part[0]);
-      line.appendChild(span);
-    });
     // The mood of the day colours the page even where the 3D signal can't run.
     document.documentElement.setAttribute('data-mood', counts.up > counts.down ? 'up' : counts.down > counts.up ? 'down' : 'flat');
     counts.stamp = stamp;
@@ -280,7 +257,7 @@
     faqBox.appendChild(item);
   });
 
-  /* ---------- Scroll: fade sections in once, light up the statements ---------- */
+  /* ---------- Scroll: fade sections in once ---------- */
   var reveals = document.querySelectorAll('.rv, .redact');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -290,15 +267,6 @@
   } else {
     Array.prototype.forEach.call(reveals, function (n) { n.classList.add('in'); });
   }
-  var says = document.querySelectorAll('.say');
-  var saysQueued = false;
-  function lightSays() {
-    saysQueued = false;
-    var line = window.innerHeight * 0.62;
-    Array.prototype.forEach.call(says, function (n) { n.classList.toggle('on', n.getBoundingClientRect().top < line); });
-  }
-  window.addEventListener('scroll', function () { if (!saysQueued) { saysQueued = true; requestAnimationFrame(lightSays); } }, { passive: true });
-  lightSays();
 
   /* ---------- Data ---------- */
   function normalise(data) {

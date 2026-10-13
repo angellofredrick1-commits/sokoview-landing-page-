@@ -22,15 +22,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="/styles.css">
-<script src="/app.js" defer></script>
+<link rel="preload" as="image" href="/images/dar-sunset-boat.jpg" fetchpriority="high">
+<link rel="stylesheet" href="/styles.css?v=4">
+<script src="/app.js?v=4" defer></script>
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
 } }
 </script>
-<script type="module" src="/signal.js" onerror="document.getElementById('top').classList.add('no-3d')"></script>
+<script type="module" src="/signal.js?v=4" onerror="document.getElementById('markets').classList.add('no-3d')"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -57,25 +58,47 @@
 
 <main id="main">
 
-<!-- ============ HERO: the totem in its amber panel, the headline beside it ============ -->
+<!-- ============ HERO: the harbour at sunset, edge to edge and up behind the nav ============ -->
 <header id="top" class="hero">
-  <!-- The 3D totem (signal.js): lamps count the stocks that fell, held and rose; the sign scrolls the day's movers. -->
-  <div class="hero-stage" aria-hidden="true"><canvas id="signal"></canvas></div>
-  <div class="hero-copy">
-    <h1 class="hero-title">Know which way your portfolio is going.</h1>
+  <img class="hero-photo" src="/images/dar-sunset-boat.jpg" alt="A boat on the water at sunset, with the Dar es Salaam skyline behind it" width="1800" height="1200" fetchpriority="high">
+  <div class="shell hero-copy">
+    <h1 class="hero-title">Sokoview puts your whole portfolio in one view.</h1>
     <p class="hero-sub">Stocks, bonds and dividends on the DSE, tracked in one place. Free, with no time limit.</p>
     <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
-    <p class="hero-data" id="hero-data">&nbsp;</p>
   </div>
 </header>
 
-<!-- ============ MARKET STRIP (page break) ============ -->
-<section class="strip" aria-label="DSE closing prices">
-  <div class="strip-label"><span class="dot" aria-hidden="true"></span><span id="strip-label">DSE · Latest close</span></div>
-  <div class="strip-scroll" id="strip-scroll" tabindex="0" aria-label="Closing prices for all DSE stocks. Hover or focus to pause.">
-    <div class="marquee">
-      <div class="marquee-set" id="strip-set"></div>
-      <div class="marquee-set marquee-copy" id="strip-copy" aria-hidden="true"></div>
+<!-- ============ LAST CLOSE: the totem in its amber panel, the day's figures beside it ============ -->
+<section id="markets" class="close">
+  <!-- The 3D totem (signal.js): lamps count the stocks that fell, held and rose; the sign scrolls the day's movers. -->
+  <div class="close-stage" aria-hidden="true"><canvas id="signal"></canvas></div>
+  <div class="close-copy">
+    <div class="head rv">
+      <div>
+        <p class="head-date" id="movers-date">Market close</p>
+        <h2 class="d2" id="movers-title">On the DSE</h2>
+      </div>
+      <p class="head-note">The biggest moves at the last close. Updated after every trading session.</p>
+    </div>
+    <div class="breadth-wrap rv">
+      <div class="breadth-bar" id="breadth-bar" aria-hidden="true"><span class="b-up"></span><span class="b-flat"></span><span class="b-down"></span><span class="b-idle"></span></div>
+      <p class="breadth" id="movers-breadth"></p>
+    </div>
+    <div class="movers rv">
+      <div>
+        <h3 class="movers-h"><span class="sig sig-up" aria-hidden="true"></span>Top gainers</h3>
+        <div id="gainers"></div>
+      </div>
+      <div>
+        <h3 class="movers-h"><span class="sig sig-down" aria-hidden="true"></span>Top losers</h3>
+        <div id="losers"></div>
+      </div>
+    </div>
+    <div class="movers-foot">
+      <p class="fine">Closing prices from Sokoview market data. Stocks that didn't trade are left out. Not investment advice.</p>
+      <a class="text-link" href="https://sokoview.co.tz/auth/register">Track these stocks free
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -110,54 +133,6 @@
       </div>
     </div>
     <p class="fine">Based on Sokoview closing prices: the first close of January 2025 against the latest close, adjusted for stock splits. Price change only; excludes dividends, broker fees and taxes. Past performance doesn't guarantee future results. Not investment advice.</p>
-  </div>
-</section>
-
-<!-- ============ STATEMENTS (light up as you scroll), then one photo with one sentence ============ -->
-<section class="says" aria-label="Why Sokoview">
-  <div class="shell">
-    <p class="say">Prices live in one place.</p>
-    <p class="say">Dividends in another.</p>
-    <p class="say">Bonds in a spreadsheet.</p>
-  </div>
-</section>
-<section class="photo-band">
-  <img src="/images/dar-sunset-boat.jpg" alt="A boat on the water at sunset, with the Dar es Salaam skyline behind it" width="1800" height="1200" loading="lazy">
-  <div class="shell">
-    <p class="photo-line rv">Sokoview puts your whole portfolio in one view.</p>
-  </div>
-</section>
-
-<!-- ============ MOVERS ============ -->
-<section id="markets" class="band">
-  <div class="shell">
-    <div class="head rv">
-      <div>
-        <p class="head-date" id="movers-date">Market close</p>
-        <h2 class="d2" id="movers-title">On the DSE</h2>
-      </div>
-      <p class="head-note">The biggest moves at the last close. Updated after every trading session.</p>
-    </div>
-    <div class="breadth-wrap rv">
-      <div class="breadth-bar" id="breadth-bar" aria-hidden="true"><span class="b-up"></span><span class="b-flat"></span><span class="b-down"></span><span class="b-idle"></span></div>
-      <p class="breadth" id="movers-breadth"></p>
-    </div>
-    <div class="movers rv">
-      <div>
-        <h3 class="movers-h"><span class="sig sig-up" aria-hidden="true"></span>Top gainers</h3>
-        <div id="gainers"></div>
-      </div>
-      <div>
-        <h3 class="movers-h"><span class="sig sig-down" aria-hidden="true"></span>Top losers</h3>
-        <div id="losers"></div>
-      </div>
-    </div>
-    <div class="movers-foot">
-      <p class="fine">Closing prices from Sokoview market data. Stocks that didn't trade are left out. Not investment advice.</p>
-      <a class="text-link" href="https://sokoview.co.tz/auth/register">Track these stocks free
-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
   </div>
 </section>
 
@@ -312,7 +287,7 @@
   </div>
 </section>
 
-<!-- ============ FINAL CTA (the hero's amber panel returns) ============ -->
+<!-- ============ FINAL CTA (the totem's amber panel returns) ============ -->
 <section class="final">
   <div class="shell">
     <h2 class="d2">See your whole portfolio in under five minutes.</h2>

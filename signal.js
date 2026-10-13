@@ -1,4 +1,4 @@
-/* Sokoview hero totem — a 3D street signal with its signs, in the hero's amber panel.
+/* Sokoview totem — a 3D street signal with its signs, in the last-close section's amber panel.
    - Lamps: LED dots showing how many DSE stocks fell (red), held (amber) and rose (green).
      They flash together, play in turn, then rest on the day's lamp.
    - LED sign: a ticker of the day's biggest movers.
@@ -16,10 +16,10 @@ const LAMPS = [
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const canvas = document.getElementById('signal');
-const hero = canvas.closest('.hero');
+const section = canvas.closest('.close');
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
-catch (err) { hero.classList.add('no-3d'); throw err; }
+catch (err) { section.classList.add('no-3d'); throw err; }
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -319,7 +319,7 @@ function frame() {
   });
   renderer.render(scene, camera);
 }
-// Only draw while the hero panel is on screen.
+// Only draw while the panel is on screen.
 new IntersectionObserver(function (entries) {
   renderer.setAnimationLoop(entries[0].isIntersecting ? frame : null);
 }).observe(canvas);

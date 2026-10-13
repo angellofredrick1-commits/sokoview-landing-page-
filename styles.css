@@ -80,40 +80,34 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 @media (max-width: 900px) { .nav-links { display: none; } .nav-actions { margin-left: auto; } }
 @media (max-width: 420px) { .nav-signin { display: none; } }
 
-/* Market strip */
-.strip { display: flex; align-items: stretch; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg2); }
-.strip-label { border-right-color: var(--line) !important; }
-.strip-label { flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 0 14px 0 20px; border-right: 1px solid var(--line2); font-size: .8125rem; font-weight: 600; color: var(--muted); white-space: nowrap; letter-spacing: .01em; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-.strip-scroll { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 20px, #000 calc(100% - 56px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 20px, #000 calc(100% - 56px), transparent 100%); }
-.strip-scroll:focus-visible { outline: 3px solid #16a34a; outline-offset: -3px; }
-.marquee { display: flex; width: max-content; animation: sv-tick 80s linear infinite; will-change: transform; }
-.marquee-set { display: flex; }
-.strip-scroll:hover .marquee, .strip-scroll:focus-within .marquee, .strip-scroll:active .marquee { animation-play-state: paused; }
-@keyframes sv-tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.tick { flex-shrink: 0; display: flex; align-items: baseline; gap: 8px; padding: 12px 16px; white-space: nowrap; font-size: .875rem; min-height: 44px; }
-.tick b { font-weight: 700; letter-spacing: .01em; }
-.tick .p { font-variant-numeric: tabular-nums; color: var(--text2); }
-.tick .c { font-weight: 600; font-variant-numeric: tabular-nums; }
+/* Price moves */
 .up { color: var(--green); } .down { color: var(--neg); } .flat { color: var(--muted); }
 
-/* Hero — Direct's layout: a tall amber panel holding the 3D totem, the headline beside it */
-.hero { display: grid; grid-template-columns: minmax(300px, 34%) minmax(0, 1fr); gap: clamp(24px, 5vw, 88px); padding: 4px 16px 0; min-height: calc(100svh - 76px); }
-.hero-stage { position: relative; min-height: 620px; border-radius: 14px; overflow: hidden; background: linear-gradient(var(--amber-top), var(--paper)); }
-.hero-stage canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.hero.no-3d .hero-stage canvas { display: none; }
-.hero-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: clamp(8px, 1.6vw, 28px) clamp(0px, 3vw, 56px) 20px 0; }
-.hero-title { font-family: var(--display); font-weight: 800; font-size: clamp(2.375rem, 5.1vw, 5.5rem); line-height: .96; letter-spacing: -0.055em; text-wrap: balance; }
-.hero-sub { margin: auto 0 clamp(22px, 3vh, 34px); padding-top: 32px; max-width: 30ch; color: var(--text2); font-size: clamp(1.0625rem, 1.5vw, 1.3125rem); line-height: 1.4; font-weight: 500; }
-.hero-data { margin-top: auto; padding-top: 32px; font-size: .9375rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted); }
-[data-mood="up"] .hero-data [data-k="up"], [data-mood="flat"] .hero-data [data-k="flat"], [data-mood="down"] .hero-data [data-k="down"] { color: var(--mood-ink); font-weight: 800; }
-[data-theme="dark"][data-mood] .hero-data [data-k] { --mood-ink: var(--mood); }
+/* Hero — the harbour at sunset, edge to edge and up behind the nav */
+.hero { position: relative; display: flex; align-items: flex-end; min-height: 100svh; margin-top: -72px; color: #ffffff; background: #1a1c1b; overflow: hidden; }
+.hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 44% 60%; }
+/* On wide screens the photo is drawn wider than the hero so the towers and the boat sit clear of the headline. */
+@media (min-width: 901px) { .hero-photo { width: 124%; max-width: none; object-position: center 66%; } }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,10,9,.44) 0, rgba(8,10,9,0) 24%, rgba(8,10,9,0) 36%, rgba(8,10,9,.76) 100%); }
+.hero .hero-copy { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: flex-start; padding-top: 120px; padding-bottom: clamp(36px, 6vw, 88px); }
+.hero-title { max-width: 11em; font-family: var(--display); font-weight: 800; font-size: clamp(2.5rem, 5.2vw, 5.25rem); line-height: .98; letter-spacing: -0.055em; text-wrap: balance; }
+.hero-sub { margin: clamp(18px, 2.4vw, 28px) 0 clamp(22px, 3vh, 34px); max-width: 32ch; color: rgba(255,255,255,.9); font-size: clamp(1.0625rem, 1.5vw, 1.3125rem); line-height: 1.4; font-weight: 500; }
+/* Over the photo the nav is clear with white type; it turns solid once the page scrolls. */
+.js .nav:not(.stuck) { background: transparent; color: #ffffff; }
+.js .nav:not(.stuck) .nav-cta { background: #ffffff; color: #0a0a0a; }
+
+/* Last close — Direct's layout: a tall amber panel holding the 3D totem, the day's figures beside it */
+.close { display: grid; grid-template-columns: minmax(300px, 34%) minmax(0, 1fr); gap: clamp(24px, 5vw, 88px); padding: 16px 16px 0; }
+/* The panel keeps its own height and stays in view while the figures scroll past it. */
+.close-stage { position: sticky; top: 88px; align-self: start; height: clamp(520px, calc(100svh - 104px), 780px); border-radius: 14px; overflow: hidden; background: linear-gradient(var(--amber-top), var(--paper)); }
+.close-stage canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.close.no-3d .close-stage canvas { display: none; }
+.close-copy { min-width: 0; padding: clamp(40px, 6vw, 96px) clamp(0px, 3vw, 56px) 20px 0; }
+.close .movers { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 40px clamp(24px, 4vw, 64px); }
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; min-height: 0; gap: 28px; }
-  .hero-copy { order: -1; padding: 20px 4px 0; }
-  .hero-sub { margin-top: 22px; padding-top: 0; }
-  .hero-data { margin-top: 26px; padding-top: 0; }
-  .hero-stage { min-height: 0; height: min(165vw, 720px); }
+  .close { grid-template-columns: 1fr; gap: 0; }
+  .close-copy { padding: 56px 4px 0; }
+  .close-stage { position: relative; top: auto; height: min(165vw, 720px); }
 }
 
 /* Shared section frame (redesigned sections) */
@@ -162,16 +156,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .calc-detail { margin: 18px 0 clamp(28px, 4vw, 48px); max-width: 44ch; font-size: .875rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
 .calc-out .btn { margin-top: auto; }
 @media (max-width: 860px) { .calc { grid-template-columns: 1fr; } .chip { min-width: 0; flex: 1; padding: 0 8px; } }
-
-/* Statements that light up on scroll, then one photo with one sentence */
-.says { padding: clamp(110px, 15vw, 220px) 0 clamp(56px, 8vw, 110px); }
-.say { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 6vw, 5.5rem); line-height: 1.04; letter-spacing: -0.055em; color: var(--dim); transition: color .5s ease; }
-.say.on { color: var(--ink); }
-.photo-band { position: relative; display: flex; align-items: flex-end; min-height: clamp(440px, 86vh, 820px); color: #ffffff; background: #1a1c1b; overflow: hidden; }
-.photo-band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
-.photo-band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,10,9,0) 30%, rgba(8,10,9,.72) 100%); }
-.photo-band .shell { position: relative; z-index: 1; width: 100%; padding-bottom: clamp(32px, 6vw, 80px); }
-.photo-line { max-width: 15ch; font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 6vw, 5.5rem); line-height: .98; letter-spacing: -0.055em; text-wrap: balance; }
 
 /* Movers */
 .breadth-wrap { padding-top: clamp(24px, 3vw, 40px); }
@@ -305,13 +289,10 @@ input[type=range] { accent-color: #16a34a; width: 100%; height: 44px; cursor: po
 /* Accessibility preferences */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; transition: none; }
-  .marquee { animation: none; will-change: auto; }
-  .marquee-copy { display: none !important; }
-  .strip-scroll { overflow-x: auto; }
   .press, .switch-thumb, .faq-q svg, .faq-a, body { transition: opacity .15s ease !important; }
   .press:active { transform: none; }
   .js .rv { opacity: 1; transform: none; transition: none; }
-  .say, .breadth-bar span { transition: none; }
+  .breadth-bar span { transition: none; }
   .js .rv .draw path { stroke-dashoffset: 0; transition: none; }
   .js .redact:not(.in)::after { transform: scaleX(0); }
   .share-row .val.wipe::after { display: none; }
