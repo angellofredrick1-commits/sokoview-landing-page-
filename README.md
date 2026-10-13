@@ -14,7 +14,7 @@ index.html        page markup
 styles.css        all styles (light + dark themes)
 app.js            renders the data, calculator, theme toggle, FAQ, scroll effects
 signal.js         the 3D totem signal (Three.js, loaded from the jsDelivr CDN)
-images/           section photos (Unsplash, credited in the footer)
+images/           hero and section photos (Unsplash: @moseslondo sunset boat, @mkumbwajr fruit cart, @_phyllo aerial)
 logos/            company logos (SYMBOL.png)
 data/fallback.json  snapshot used only if the live function fails
 netlify/functions/landing-data.mjs   GET /api/landing → Supabase
