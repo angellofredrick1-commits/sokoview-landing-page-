@@ -42,25 +42,10 @@
   });
   syncThemeButton();
 
-  /* ---------- Market strip + movers ---------- */
+  /* ---------- Last close: movers, breadth and the totem ---------- */
   function renderMarket(market) {
     if (!market.length) return;
     var closeDate = market[0].trade_date;
-    $('strip-label').textContent = 'DSE · ' + date(closeDate, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '') + ' close';
-
-    var setA = $('strip-set'), setB = $('strip-copy');
-    setA.textContent = ''; setB.textContent = '';
-    market.forEach(function (m) {
-      [setA, setB].forEach(function (set) {
-        var t = el('div', 'tick');
-        t.appendChild(el('b', null, m.symbol));
-        t.appendChild(el('span', 'p', tzs(m.close)));
-        var cls = !m.traded || m.pct_change === 0 ? 'flat' : m.pct_change > 0 ? 'up' : 'down';
-        t.appendChild(el('span', 'c ' + cls, m.traded ? pctText(m.pct_change) : 'No trades'));
-        set.appendChild(t);
-      });
-    });
-
     var traded = market.filter(function (m) { return m.traded; });
     var byPct = traded.slice().sort(function (a, b) { return b.pct_change - a.pct_change; });
     var gainers = byPct.filter(function (m) { return m.pct_change > 0; }).slice(0, 3);
@@ -85,10 +70,35 @@
     var ups = traded.filter(function (m) { return m.pct_change > 0; }).length;
     var downs = traded.filter(function (m) { return m.pct_change < 0; }).length;
     var idle = market.length - traded.length;
-    $('movers-breadth').textContent = ups + ' up · ' + downs + ' down · ' + (traded.length - ups - downs) + ' unchanged' + (idle ? ' · ' + idle + ' didn’t trade' : '');
+    $('movers-breadth').textContent = ups + ' up · ' + (traded.length - ups - downs) + ' unchanged · ' + downs + ' down' + (idle ? ' · ' + idle + ' didn’t trade' : '');
     $('movers-date').textContent = 'Market close · ' + date(closeDate, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     $('movers-title').textContent = date(closeDate, { weekday: 'long' }) + ' on the DSE';
+
+    var flats = traded.length - ups - downs;
+    var bar = $('breadth-bar').children;
+    [ups, flats, downs, idle].forEach(function (n, i) { bar[i].style.flexGrow = n; });
+    $('stat-stocks').textContent = market.length;
+    startSignal({
+      up: ups, flat: flats, down: downs,
+      movers: gainers.concat(losers).map(function (m) { return { sym: m.symbol, up: m.pct_change > 0, move: pctText(m.pct_change) }; })
+    }, closeDate);
   }
+
+  /* ---------- Totem: hand the day's counts and movers to signal.js ---------- */
+  function startSignal(counts, closeDate) {
+    var stamp = date(closeDate, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '');
+    // The mood of the day colours the page even where the 3D signal can't run.
+    document.documentElement.setAttribute('data-mood', counts.up > counts.down ? 'up' : counts.down > counts.up ? 'down' : 'flat');
+    counts.stamp = stamp;
+    window.svSignal = counts;
+    window.dispatchEvent(new CustomEvent('sv:signal', { detail: counts }));
+  }
+
+  /* ---------- Nav gets a hairline once the page scrolls ---------- */
+  var nav = $('nav');
+  function syncNav() { nav.classList.toggle('stuck', window.scrollY > 8); }
+  window.addEventListener('scroll', syncNav, { passive: true });
+  syncNav();
 
   /* ---------- What-if calculator ---------- */
   var calc = { stocks: [], sym: DEFAULT_STOCK, amount: 1000000 };
@@ -203,19 +213,19 @@
   /* ---------- Share toggle (example portfolio) ---------- */
   var SHARE = [['CRDB Bank', 1428000, '34%'], ['NMB Bank', 1092000, '26%'], ['Govt bond', 924000, '22%'], ['Tanzania Breweries', 756000, '18%']];
   var sw = $('share-switch');
-  function renderShare() {
+  function renderShare(animate) {
     var show = sw.getAttribute('aria-checked') === 'true';
     var box = $('share-rows'); box.textContent = '';
     SHARE.forEach(function (r) {
       var row = el('div', 'share-row');
       row.appendChild(el('span', null, r[0]));
-      row.appendChild(el('span', null, show ? tzs(r[1]) : r[2]));
+      row.appendChild(el('span', animate ? 'val wipe' : 'val', show ? tzs(r[1]) : r[2]));
       box.appendChild(row);
     });
   }
   sw.addEventListener('click', function () {
     sw.setAttribute('aria-checked', String(sw.getAttribute('aria-checked') !== 'true'));
-    renderShare();
+    renderShare(true);
   });
   renderShare();
 
@@ -246,6 +256,17 @@
     item.appendChild(q); item.appendChild(a);
     faqBox.appendChild(item);
   });
+
+  /* ---------- Scroll: fade sections in once ---------- */
+  var reveals = document.querySelectorAll('.rv, .redact');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    Array.prototype.forEach.call(reveals, function (n) { io.observe(n); });
+  } else {
+    Array.prototype.forEach.call(reveals, function (n) { n.classList.add('in'); });
+  }
 
   /* ---------- Data ---------- */
   function normalise(data) {
