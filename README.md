@@ -8,6 +8,8 @@ A static landing page plus one Netlify function. The page shows:
 - Tools (bond calculator, share toggle), how it works, privacy, community, pricing and FAQ.
 
 All market data comes live from Supabase, read on the server, so no key ever reaches the browser.
+The latest close for each stock is then taken from the DSE's own public price API, because the
+Supabase capture can run a day behind.
 
 ```
 index.html        page markup
@@ -27,6 +29,8 @@ netlify.toml      Netlify settings
 Browser ──GET /api/landing──▶ Netlify function ──▶ Supabase
                                  (cached 15 min)     rpc market_snapshot()
                                                      rpc growth_since_jan_2025()
+                                 ──▶ dse.co.tz price API (latest official close per stock;
+                                     any stock it doesn't answer for keeps its Supabase figures)
 ```
 
 Both Supabase functions are read-only and already exist in the
