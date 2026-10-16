@@ -99,7 +99,15 @@ async function dseCloses(symbols) {
         })
     )
   );
-  return new Map(results.filter((r) => r.status === "fulfilled" && r.value).map((r) => r.value));
+  const KEY = process.env.SUPABASE_SERVICE_KEY;
+const dseRows = market.filter(m => m.source === 'dse');
+if (KEY && dseRows.length) {
+  await fetch(`${process.env.SUPABASE_URL}/rest/v1/rpc/ingest_dse_closes`, {
+    method: 'POST',
+    headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ payload: dseRows }),
+  }).catch(() => {});
+}return new Map(results.filter((r) => r.status === "fulfilled" && r.value).map((r) => r.value));
 }
 
 function json(body, status, cacheControl, cdnCacheControl) {
