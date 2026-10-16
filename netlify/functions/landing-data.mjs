@@ -7,9 +7,14 @@
 // session's quote under today's date). Any stock the DSE doesn't answer for
 // keeps its Supabase figures.
 //
+// The DSE closes are also saved back to Supabase (source 'dse') so the price
+// history stays correct. That write uses the service key, server-side only.
+//
 // Environment variables (Netlify → Site configuration → Environment variables):
-//   SUPABASE_URL       e.g. https://YOUR-PROJECT-REF.supabase.co
-//   SUPABASE_ANON_KEY  the project's public anon / publishable key (NOT the service key)
+//   SUPABASE_URL          e.g. https://YOUR-PROJECT-REF.supabase.co
+//   SUPABASE_ANON_KEY     the project's public anon / publishable key
+//   SUPABASE_SERVICE_KEY  the service_role key, marked Secret. Optional: without it
+//                         the page still works, the DSE closes just aren't saved.
 
 const TOP_N = 10;
 const DSE_PRICES = "https://dse.co.tz/api/get/market/prices/for/range/duration";
@@ -56,6 +61,10 @@ export default async () => {
         return { ...g, latest_date: d.trade_date, latest_close: d.close, pct_change: Math.round(pct * 100) / 100 };
       })
       .sort((a, b) => b.pct_change - a.pct_change);
+
+    // Save the DSE closes to Supabase. Never allowed to break the page.
+    await saveDseCloses(base, market.filter((m) => m.source === "dse"));
+
     return json(
       { market, growth, generated_at: new Date().toISOString() },
       200,
@@ -99,16 +108,39 @@ async function dseCloses(symbols) {
         })
     )
   );
-  const KEY = process.env.SUPABASE_SERVICE_KEY;
-const dseRows = market.filter(m => m.source === 'dse');
-if (KEY && dseRows.length) {
-  await fetch(`${process.env.SUPABASE_URL}/rest/v1/rpc/ingest_dse_closes`, {
-    method: 'POST',
-    headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ payload: dseRows }),
-  }).catch(() => {});
-}return new Map(results.filter((r) => r.status === "fulfilled" && r.value).map((r) => r.value));
+  return new Map(results.filter((r) => r.status === "fulfilled" && r.value).map((r) => r.value));
 }
+
+// Writes the DSE closes to Supabase through ingest_dse_closes(), which only the
+// service key may call. Skipped if the key isn't set; any failure is logged only.
+async function saveDseCloses(base, rows) {
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY;
+  if (!serviceKey || !rows.length) return;
+  const payload = rows.map(({ symbol, trade_date, close, change, pct_change, traded }) =>
+    ({ symbol, trade_date, close, change, pct_change, traded }));
+  try {
+    const r = await fetch(`${base}/rest/v1/rpc/ingest_dse_closes`, {
+      method: "POST",
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload }),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!r.ok) console.error(`ingest_dse_closes: ${r.status} ${await r.text()}`);
+  } catch (err) {
+    console.error("ingest_dse_closes failed:", err);
+  }
+}
+
+function json(body, status, cacheControl, cdnCacheControl) {
+  const headers = {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": cacheControl,
+  };
+  if (cdnCacheControl) headers["Netlify-CDN-Cache-Control"] = cdnCacheControl;
   return new Response(JSON.stringify(body), { status, headers });
 }
 
