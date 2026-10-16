@@ -109,10 +109,6 @@ if (KEY && dseRows.length) {
   }).catch(() => {});
 }return new Map(results.filter((r) => r.status === "fulfilled" && r.value).map((r) => r.value));
 }
-
-function json(body, status, cacheControl, cdnCacheControl) {
-  const headers = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": cacheControl };
-  if (cdnCacheControl) headers["Netlify-CDN-Cache-Control"] = cdnCacheControl;
   return new Response(JSON.stringify(body), { status, headers });
 }
 
