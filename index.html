@@ -22,15 +22,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="/styles.css?v=5">
-<script src="/app.js?v=5" defer></script>
+<link rel="stylesheet" href="/styles.css?v=6">
+<script src="/app.js?v=6" defer></script>
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
 } }
 </script>
-<script type="module" src="/signal.js?v=5" onerror="document.getElementById('markets').classList.add('no-3d')"></script>
+<script type="module" src="/signal.js?v=6" onerror="document.getElementById('markets').classList.add('no-3d')"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -43,6 +43,7 @@
       <span class="brand-word">sokoview</span>
     </a>
     <div class="nav-links">
+      <a class="nav-link" href="/app/">The app</a>
       <a class="nav-link" href="#markets">Markets</a>
       <a class="nav-link" href="#tools">Bonds &amp; research</a>
       <a class="nav-link" href="#pricing">Pricing</a>
@@ -71,7 +72,10 @@
 <section class="hero-film-cta" aria-label="Get started">
   <div class="shell hero-film-cta-inner">
     <p class="hero-film-sub">Stocks, bonds and dividends on the DSE, tracked in one place. Free, with no time limit.</p>
-    <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
+    <div class="hero-film-actions">
+      <a class="hero-film-link" href="/app/">See everything in the app</a>
+      <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
+    </div>
   </div>
 </section>
 
