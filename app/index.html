@@ -297,6 +297,14 @@ footer p { color: var(--muted); max-width: 46em; }
   .stack .phone.front { transform: translateX(18%); }
   .facts li { grid-template-columns: 7.5rem 1fr; }
   .ticker { flex-direction: column; align-items: stretch; gap: 10px; }
+  /* phones: screenshots at a phone-in-hand size, not desktop size */
+  .phone { width: min(230px, 58vw); padding: 7px; border-radius: 38px; }
+  .phone img { border-radius: 31px; }
+  .phone::after { top: 15px; height: 18px; }
+  .phone.sm { width: min(185px, 47vw); }
+  .slide .phone { width: min(180px, 48vw); border-radius: 32px; padding: 6px; }
+  .slide .phone img { border-radius: 26px; }
+  .slide .phone::after { top: 13px; height: 15px; }
 }
 @media (max-width: 480px) {
   .hero-ctas .btn { flex: 1 1 100%; }
