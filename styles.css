@@ -298,3 +298,21 @@ input[type=range] { accent-color: #16a34a; width: 100%; height: 44px; cursor: po
   .share-row .val.wipe::after { display: none; }
 }
 @media (prefers-contrast: more) { .nav.stuck { box-shadow: 0 2px 0 var(--ink); } }
+
+/* ---------- Hero film ----------
+   The hero is a 21s silent film, shown whole (16:9) so its own titles are never cropped.
+   app.js swaps the dark and light films to match data-theme. */
+.hero-film { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100svh - 72px); background: #0a0d0b; overflow: hidden; transition: background-color .35s ease; }
+.hero-film.is-light { background: #ffffff; }
+.hero-film-video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.hero-film-toggle { position: absolute; right: clamp(12px, 2vw, 24px); bottom: clamp(12px, 2vw, 24px); width: 44px; height: 44px; padding: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.18); background: rgba(20,24,22,.55); color: #ffffff; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.hero-film.is-light .hero-film-toggle { background: rgba(255,255,255,.75); color: #0a0a0a; border-color: rgba(0,0,0,.12); }
+.hero-film-toggle svg { width: 16px; height: 16px; fill: currentColor; }
+.hero-film-toggle .i-play { display: none; }
+.hero-film.paused .hero-film-toggle .i-play { display: block; }
+.hero-film.paused .hero-film-toggle .i-pause { display: none; }
+.hero-film-cta { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); transition: background-color .35s ease, color .35s ease; }
+.hero-film-cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding-top: clamp(20px, 3vw, 32px); padding-bottom: clamp(20px, 3vw, 32px); }
+.hero-film-sub { margin: 0; max-width: 40ch; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.4; font-weight: 500; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-transparency: reduce) { .hero-film-toggle { -webkit-backdrop-filter: none; backdrop-filter: none; background: #141816; } .hero-film.is-light .hero-film-toggle { background: #ffffff; } }
