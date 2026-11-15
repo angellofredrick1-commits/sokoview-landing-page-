@@ -22,16 +22,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
-<link rel="preload" as="image" href="/images/dar-sunset-boat.jpg" fetchpriority="high">
-<link rel="stylesheet" href="/styles.css?v=4">
-<script src="/app.js?v=4" defer></script>
+<link rel="stylesheet" href="/styles.css?v=5">
+<script src="/app.js?v=5" defer></script>
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
 } }
 </script>
-<script type="module" src="/signal.js?v=4" onerror="document.getElementById('markets').classList.add('no-3d')"></script>
+<script type="module" src="/signal.js?v=5" onerror="document.getElementById('markets').classList.add('no-3d')"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -59,14 +58,22 @@
 <main id="main">
 
 <!-- ============ HERO: the harbour at sunset, edge to edge and up behind the nav ============ -->
-<header id="top" class="hero">
-  <img class="hero-photo" src="/images/dar-sunset-boat.jpg" alt="A boat on the water at sunset, with the Dar es Salaam skyline behind it" width="1800" height="1200" fetchpriority="high">
-  <div class="shell hero-copy">
-    <h1 class="hero-title">Sokoview puts your whole portfolio in one view.</h1>
-    <p class="hero-sub">Stocks, bonds and dividends on the DSE, tracked in one place. Free, with no time limit.</p>
+<!-- Hero film: one 21s silent film per theme; app.js picks the one matching data-theme -->
+<header id="top" class="hero-film" data-film>
+  <h1 class="sr-only">Sokoview puts your whole portfolio in one view.</h1>
+  <video class="hero-film-video" autoplay muted loop playsinline preload="auto" poster="/images/hero-film-dark.jpg"
+    aria-label="Sokoview in 21 seconds: every DSE share you own in one clear view, your portfolio priced every day, the whole DSE at a glance, and Lulu answering questions about your holdings."></video>
+  <button class="hero-film-toggle press" type="button" aria-label="Pause video">
+    <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>
+    <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a.8.8 0 0 0 1.2.7l9-5.5a.8.8 0 0 0 0-1.4l-9-5.5A.8.8 0 0 0 4 2.5z"/></svg>
+  </button>
+</header>
+<section class="hero-film-cta" aria-label="Get started">
+  <div class="shell hero-film-cta-inner">
+    <p class="hero-film-sub">Stocks, bonds and dividends on the DSE, tracked in one place. Free, with no time limit.</p>
     <a class="btn btn-accent press" href="https://sokoview.co.tz/auth/register">Start tracking free</a>
   </div>
-</header>
+</section>
 
 <!-- ============ LAST CLOSE: the totem in its amber panel, the day's figures beside it ============ -->
 <section id="markets" class="close">
