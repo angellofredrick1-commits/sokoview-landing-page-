@@ -307,8 +307,8 @@
   var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var films = {
-    dark: ['/images/hero-film-dark.mp4', '/images/hero-film-dark.jpg'],
-    light: ['/images/hero-film-light.mp4', '/images/hero-film-light.jpg']
+    dark: ['/images/hero-film-dark.mp4?v=2', '/images/hero-film-dark.jpg'],
+    light: ['/images/hero-film-light.mp4?v=2', '/images/hero-film-light.jpg']
   };
   var current = null;
   var userPaused = false;
