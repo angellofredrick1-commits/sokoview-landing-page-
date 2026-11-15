@@ -130,3 +130,7 @@ select json_build_object(
   `/auth/register`. Check these match your app.
 - Logos are included for all 10 current stocks. If a new stock enters the
   grid, it shows a ticker badge until you add its logo.
+
+## App page and waiting list
+
+`/app/` (`app/index.html`) shows the full app and collects waiting-list emails with Netlify Forms. Sign-ups appear in Netlify under **Forms → waitlist**; the `source` field says whether the top or bottom form was used. Form detection must be enabled in Netlify (Site configuration → Forms) for submissions to be saved.
