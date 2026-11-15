@@ -293,3 +293,62 @@
     })
     .catch(function (err) { console.error('Could not load market data', err); });
 })();
+
+/* Hero film: one silent 21s film per theme. Follows data-theme (set by the
+   page's theme toggle), keeps the playhead when the theme changes, can be
+   paused, and stays on the still poster for people who prefer reduced motion. */
+(function () {
+  'use strict';
+  var hero = document.querySelector('[data-film]');
+  if (!hero) return;
+  var video = hero.querySelector('video');
+  var btn = hero.querySelector('.hero-film-toggle');
+  var root = document.documentElement;
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var films = {
+    dark: ['/images/hero-film-dark.mp4?v=2', '/images/hero-film-dark.jpg'],
+    light: ['/images/hero-film-light.mp4?v=2', '/images/hero-film-light.jpg']
+  };
+  var current = null;
+  var userPaused = false;
+
+  function mode() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'light' || t === 'dark') return t;
+    return prefersDark.matches ? 'dark' : 'light';
+  }
+  function sync() {
+    hero.classList.toggle('paused', video.paused);
+    btn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+  }
+  function start() {
+    var p = video.play();
+    if (p && p.catch) p.catch(sync);
+  }
+  function load() {
+    var m = mode();
+    if (m === current) return;
+    var at = current ? video.currentTime : 0;
+    current = m;
+    hero.classList.toggle('is-light', m === 'light');
+    video.poster = films[m][1];
+    video.src = films[m][0];
+    video.addEventListener('loadedmetadata', function () {
+      if (at) { try { video.currentTime = at; } catch (e) {} }
+      if (!still.matches && !userPaused) start();
+    }, { once: true });
+  }
+
+  if (still.matches) video.removeAttribute('autoplay');
+  video.addEventListener('play', sync);
+  video.addEventListener('pause', sync);
+  btn.addEventListener('click', function () {
+    if (video.paused) { userPaused = false; start(); }
+    else { userPaused = true; video.pause(); }
+  });
+  new MutationObserver(load).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  if (prefersDark.addEventListener) prefersDark.addEventListener('change', load);
+  load();
+  sync();
+})();
