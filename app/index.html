@@ -91,13 +91,6 @@ h3 { font-size: 1.15rem; line-height: 1.25; letter-spacing: -.01em; font-weight:
 .g { color: var(--green); }
 p { margin: 0; color: var(--body); text-wrap: pretty; }
 .lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.55; max-width: 34em; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font: 700 .72rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--green-ink); background: var(--green-wash); border: 1px solid var(--green-line);
-  padding: 8px 14px; border-radius: 100px;
-}
-.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 .tnum { font-variant-numeric: tabular-nums; }
 
 /* ---------- nav: translucent material, content scrolls under ---------- */
@@ -386,7 +379,6 @@ html, body { margin: 0; }
   <section class="app-hero">
     <div class="wrap row">
       <div class="copy">
-        <span class="eyebrow">The Sokoview app</span>
         <h1>Your DSE portfolio, <span class="g">in your pocket.</span></h1>
         <p class="lede">Your stocks, unit trusts and bonds priced in shillings every day, the whole market at a glance, and Lulu to read your portfolio with you. Join the waiting list and we'll email you when the app is ready for you.</p>
         <form class="wl" name="waitlist" method="POST" action="/app/?joined=1#waitlist" data-netlify="true" netlify-honeypot="company" novalidate>
@@ -422,7 +414,6 @@ html, body { margin: 0; }
   <section class="feature" id="portfolio">
     <div class="wrap row">
       <div class="copy rise">
-        <span class="eyebrow">Home</span>
         <h2>Your portfolio, <span class="g">priced every day.</span></h2>
         <p class="lede">Open the app and see what everything is worth in TZS, what you have gained, and how far you are from the target you set.</p>
         <ul class="facts tnum">
@@ -442,7 +433,6 @@ html, body { margin: 0; }
   <section class="feature" id="market">
     <div class="wrap row flip">
       <div class="copy rise">
-        <span class="eyebrow">Market</span>
         <h2>The whole DSE <span class="g">at a glance.</span></h2>
         <p class="lede">The market map sizes every listed company by its share of the market and tints it by today's move. Banks, consumer goods, telecoms: you see where the money sits and what moved.</p>
         <div class="chip-row" aria-label="How the map reads">
@@ -464,7 +454,6 @@ html, body { margin: 0; }
   <section class="feature" id="lulu">
     <div class="wrap row">
       <div class="copy rise">
-        <span class="eyebrow">Lulu</span>
         <h2>Ask Lulu about <span class="g">your portfolio.</span></h2>
         <p class="lede">Lulu is your CFE-trained guide. She reads your holdings and answers in plain English or Kiswahili, then asks the question that helps you decide.</p>
         <span class="ask">Is my portfolio too concentrated?</span>
@@ -487,7 +476,6 @@ html, body { margin: 0; }
     <div class="wrap">
       <div class="row flip">
         <div class="copy rise">
-          <span class="eyebrow">Tools</span>
           <h2>Price a government bond <span class="g">before you bid.</span></h2>
           <p class="lede">Enter a Tanzanian government bond and a settlement date. Sokoview works out the clean price, accrued interest, dirty price, duration and what it will cost you.</p>
           <ul class="facts tnum">
@@ -526,7 +514,6 @@ html, body { margin: 0; }
   <section class="tour" id="tour" aria-labelledby="tourTitle">
     <div class="wrap tour-head">
       <div class="copy" style="gap:14px">
-        <span class="eyebrow">Tour</span>
         <h2 id="tourTitle">Swipe through the app.</h2>
       </div>
       <div class="tour-nav">
